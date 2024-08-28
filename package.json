@@ -1,0 +1,56 @@
+{
+  "name": "turbo-cli",
+  "version": "1.0.0",
+  "main": "./dist/cli.js",
+  "type": "module",
+  "author": {
+    "name": "Permanent Data Solutions Inc",
+    "email": "info@ardrive.io",
+    "website": "https://ardrive.io"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "AGPL-3.0-or-later",
+  "bin": {
+    "turbo": "./dist/cli.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-prettier": "^5.2.1",
+    "husky": "^9.1.5",
+    "prettier": "^3.3.3",
+    "semantic-release": "^24.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@ardrive/turbo-sdk": "link:../ardrive-turbo-sdk",
+    "bs58": "^6.0.0",
+    "commander": "^12.1.0"
+  },
+  "scripts": {
+    "start": "node dist/cli.js",
+    "build": "yarn clean && tsc",
+    "dev": "tsc -w",
+    "clean": "rimraf [ dist ]",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "test": "echo \"No tests specified\" && exit 0"
+  }
+}
