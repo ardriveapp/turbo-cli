@@ -38,7 +38,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@ardrive/turbo-sdk": "link:../ardrive-turbo-sdk",
+    "@ardrive/turbo-sdk": "alpha",
     "bs58": "^6.0.0",
     "commander": "^12.1.0"
   },
