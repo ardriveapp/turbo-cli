@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { isTokenType, privateKeyFromKyveMnemonic } from '@ardrive/turbo-sdk';
+import { privateKeyFromKyveMnemonic } from '@ardrive/turbo-sdk';
 import bs58 from 'bs58';
 import { program } from 'commander';
 import { readFileSync } from 'fs';
 
 import { cryptoFund, getBalance } from './commands.js';
+import { amountFromOptions, tokenFromOptions } from './utils.js';
 import { version } from './version.js';
 
 program
@@ -61,28 +62,21 @@ program
   .option('-m, --mnemonic <phrase>', 'Mnemonic to upload with')
   .option('-t, --token <type>', 'Token type for wallet', 'arweave')
   .option('-a, --amount <amount>', 'Amount of crypto to top up')
-  .action(async ({ amount, token, mnemonic, walletFile }) => {
-    if (!amount || !token) {
-      throw new Error('Amount and token required');
-    }
-
-    if (!isTokenType(token)) {
-      throw new Error('Invalid token type');
-    }
+  .action(async (options) => {
+    const token = tokenFromOptions(options);
+    const amount = amountFromOptions(options);
 
     let privateKey: string | undefined;
-    if (mnemonic) {
+    if (options.mnemonic !== undefined) {
       if (token === 'kyve') {
-        privateKey = await privateKeyFromKyveMnemonic(mnemonic);
+        privateKey = await privateKeyFromKyveMnemonic(options.mnemonic);
       } else {
         throw new Error(
           'mnemonic provided but this token type mnemonic to wallet is not supported',
         );
       }
-    }
-
-    if (walletFile) {
-      const wallet = JSON.parse(readFileSync(walletFile, 'utf-8'));
+    } else if (options.walletFile !== undefined) {
+      const wallet = JSON.parse(readFileSync(options.walletFile, 'utf-8'));
 
       privateKey = token === 'solana' ? bs58.encode(wallet) : wallet;
     }

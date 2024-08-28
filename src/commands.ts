@@ -18,7 +18,7 @@ import {
   TokenType,
   TurboFactory,
   TurboWallet,
-  USD,
+  isTokenType,
   tokenToBaseMap,
 } from '@ardrive/turbo-sdk';
 
@@ -26,15 +26,19 @@ const config = {
   paymentServiceConfig: { url: 'https://payment.ardrive.dev' },
   uploadServiceConfig: { url: 'https://upload.ardrive.dev' },
 };
-export async function getBalance(address: string, tokenType: string) {
+export async function getBalance(address: string, token: string) {
+  if (!isTokenType(token)) {
+    throw new Error('Invalid token type!');
+  }
+
   const unauthenticatedTurbo = TurboFactory.unauthenticated({
-    paymentServiceConfig: { token: tokenType as TokenType },
+    paymentServiceConfig: { token },
   });
-  const balance = await unauthenticatedTurbo.createCheckoutSession({
-    amount: USD(10),
-    owner: address,
-  });
-  console.log('Turbo balance', balance);
+  console.log('unauthenticatedTurbo', unauthenticatedTurbo);
+  // const balance = await unauthenticatedTurbo.getBalance({
+  //   owner: address,
+  // });
+  console.log('TODO: Get balance for', address);
 }
 
 export interface CryptoFundParams {
